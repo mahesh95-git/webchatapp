@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import io from 'socket.io-client';
 
 let socket;
@@ -7,9 +7,9 @@ let socket;
 const SocketComponent = () => {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
-
+  socket = io('http://localhost:3000'); 
   useEffect(() => {
-    socket = io('http://localhost:3000'); // Explicitly specify the server URL
+   // Explicitly specify the server URL
 
     socket.on('connect', () => {
       console.log('connected to server');
@@ -28,26 +28,34 @@ const SocketComponent = () => {
     };
   }, []);
 
-  const sendMessage = () => {
-    socket.emit('message', message);
-    setMessage('');
+
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    if (message.trim() !== '') {
+      socket.emit('message', message);
+      setMessage('');
+    }
   };
 
   return (
     <div>
+    
       <ul>
         {messages.map((msg, index) => (
           <li key={index}>{msg}</li>
         ))}
       </ul>
-      <input
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        type="text"
-        placeholder="Type a message"
-        className='text-black'
-      />
-      <button onClick={sendMessage}>Send</button>
+      <form onSubmit={sendMessage}>
+        <input
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          type="text"
+          placeholder="Type a message"
+          className='text-black'
+        />
+        <button type="submit">Send</button>
+      </form>
     </div>
   );
 };

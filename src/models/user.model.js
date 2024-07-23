@@ -68,9 +68,7 @@ const userSchema = mongoose.model({
     type: String,
   },
 
-  gender: {
-    type: String,
-  },
+
   isVerified: {
     type: Boolean,
     default: true,

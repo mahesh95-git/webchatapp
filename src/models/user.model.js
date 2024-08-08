@@ -1,17 +1,20 @@
 import mongoose from "mongoose";
 
-const userSchema = mongoose.model({
+const userSchema = new mongoose.Schema({
   profilePic: {
     type: String,
     default: "",
   },
-  name: {
+  username: {
     type: String,
     required: true,
+    unique:true,
+
   },
   email: {
     type: String,
     required: true,
+    unique:true
   },
   password: {
     type: String,
@@ -24,6 +27,8 @@ const userSchema = mongoose.model({
         ref: "User",
       },
     ],
+    
+    
   },
   friendRequests: {
     type: [
@@ -59,6 +64,7 @@ const userSchema = mongoose.model({
   },
   lastSeen: {
     type: Date,
+    
   },
   createdAt: {
     type: Date,
@@ -71,7 +77,7 @@ const userSchema = mongoose.model({
 
   isVerified: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   online: {
     type: Boolean,
@@ -90,12 +96,18 @@ const userSchema = mongoose.model({
   },
   verificationTokenExpires: {
     type: Date,
+    default:function() {
+      return Date.now() + 24 * 60 * 60 * 1000; // Default to 24 hours from now
+    },
   },
   resetToken: {
     type: String,
   },
   resetTokenExpires: {
     type: Date,
+    default:function() {
+      return Date.now() + 24 * 60 * 60 * 1000; 
+    },
   },
 });
 

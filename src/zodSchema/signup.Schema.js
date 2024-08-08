@@ -1,5 +1,6 @@
 import { z } from "zod";
 const signupSchema = z.object({
+  username:z.string(),
   email: z.string().email("Please enter a valid email"),
   password: z.string().min(8, "Password must be at least 8 characters"),
   confirmPassword: z.string(),

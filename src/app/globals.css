@@ -67,3 +67,36 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Add this to your global CSS file (e.g., styles.css) */
+.scrollbar-custom {
+  @apply overflow-y-scroll; /* Ensures scrollbar appears */
+}
+
+
+/* WebKit browsers (Chrome, Safari) */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Firefox */
+.scrollbar-custom {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+
+/* Chrome, Edge, and Firefox */

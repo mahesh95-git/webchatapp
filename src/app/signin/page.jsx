@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { loginFields } from "@/constant";
+import { loginFields } from "../../constant";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

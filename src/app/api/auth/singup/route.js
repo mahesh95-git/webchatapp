@@ -44,7 +44,7 @@ export async function POST(req) {
     await sendEmail({
       receiverEmail: newUser.email,
       name: newUser.username,
-      url: `http://localhost:3000/api/auth/verifyEmail/${verificationToken}`,
+      url:`${process.env.PROTOCOL}://${process.env.DOMAIN}/verifyemail/${verificationToken}`,
     });
 
     return new apiResponse().sendResponse({

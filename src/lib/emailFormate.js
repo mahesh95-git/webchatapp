@@ -1,6 +1,5 @@
-const emailFormate=(name,url)=>{
-   
-    return `<!DOCTYPE html>
+const emailFormate = (name, url) => {
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,16 +22,7 @@ const emailFormate=(name,url)=>{
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        .email-header {
-            background-color: #007bff;
-            color: #ffffff;
-            padding: 20px;
-            text-align: center;
-        }
-        .email-header img {
-            max-width: 120px;
-            height: auto;
-        }
+        
         .email-body {
             padding: 20px;
             text-align: center;
@@ -51,8 +41,8 @@ const emailFormate=(name,url)=>{
             display: inline-block;
             font-size: 16px;
             font-weight: bold;
-            color: #ffffff;
-            background-color: #28a745;
+            color: white;
+            background-color: #1f2937;
             padding: 15px 30px;
             text-decoration: none;
             border-radius: 5px;
@@ -70,28 +60,27 @@ const emailFormate=(name,url)=>{
             padding: 10px;
             border-top: 1px solid #e2e2e2;
         }
+      
     </style>
 </head>
 <body>
     <div class="email-wrapper">
-        <div class="email-header">
-            <img src="https://example.com/logo.png" alt="Company Logo">
-        </div>
+        
         <div class="email-body">
             <h1>Welcome to NiceChat!</h1>
             <p>Hi ${name},</p>
             <p>Thank you for signing up with us. We're excited to have you on board! To get started, please verify your email address by clicking the button below:</p>
-            verification token : ${url}
+           <div>verification token : ${url}</div>
             <a href=${url} class="verify-button">Verify Your Email</a>
             <p>If you did not create an account, please ignore this email.</p>
-        </div>
+       
         <div class="email-footer">
             <p>&copy; 2024 NiceChat. All rights reserved.</p>
         </div>
     </div>
 </body>
 </html>
-`
-}
+`;
+};
 
 export default emailFormate;

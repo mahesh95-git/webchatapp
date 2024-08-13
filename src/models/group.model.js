@@ -1,40 +1,46 @@
 import mongoose from "mongoose";
 const groupSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
+  avatar: {
+    url: {
+      type: String,
     },
-    members: {
-        type: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "User",
-            },
-        ],
+    publicId: {
+      type: String,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
+  },
+  name: {
+    type: String,
+    required: true,
+  },
 
-    messages: {
-        type: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "chat",
-            },
-        ],
-    },
-    about:{
-        type: String
-
-    },
-    admin:{
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  about: {
+    type: String,
+    required: true,
+  },
+  members: {
+    type: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }
-})
+        ref: "User",
+      },
+    ],
+    required: true,
+  },
+  admin: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    required: true,
+  },
+});
 
-const Group =mongoose.models.Group|| mongoose.model("Group", groupSchema);
+const Group = mongoose.models.Group || mongoose.model("Group", groupSchema);
 
-export default Group
+export default Group;

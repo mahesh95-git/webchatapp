@@ -23,7 +23,7 @@ function Page() {
   const { toast, toasts } = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [username, setUsername] = useState("");
+
   const [isAvailable, setIsAvailable] = useState(true);
   const [isLoading2, setIsLoading2] = useState(false);
   const form = useForm({
@@ -35,6 +35,7 @@ function Page() {
       confirmPassword: "",
     },
   });
+  const username = form.watch("username");
 
   useEffect(() => {
     let interval;
@@ -70,6 +71,7 @@ function Page() {
 
   async function onSubmit(values) {
     try {
+      console.log(values)
       setIsLoading(true);
       const response = await axios.post(
         "http://localhost:3000/api/auth/singup",
@@ -84,7 +86,7 @@ function Page() {
       }
     } catch (error) {
       toast({
-        title: response.data?.message,
+        title: error.response.data?.message,
         variant: "destructive",
       });
       setIsLoading(false);
@@ -115,8 +117,7 @@ function Page() {
                     <Input
                       placeholder="username"
                       {...field}
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      
                     />
                   </FormControl>
                   {isLoading2 ? (

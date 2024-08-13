@@ -9,33 +9,47 @@ function Page({ params }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const token = params.token;
+
   useEffect(() => {
+    let isMounted = true; // To avoid state updates if the component is unmounted during the async call
+
     (async () => {
       try {
         const response = await axios.post(
           `http://localhost:3000/api/auth/verifyEmail/${token}`
         );
         if (response.data?.success) {
-          toast({
-            title: response.data?.message,
-            description: "Your email has been successfully verified.",
-            className: "bg-green-500 text-white", // Assuming you style using className
-          });
-          router.push("/home/allchats");
+          if (isMounted) {
+            toast({
+              title: response.data?.message,
+              description: "Your email has been successfully verified.",
+              className: "bg-green-500 text-white",
+            });
+            // Redirect after showing the toast
+            router.push("/home/allchats");
+          }
         }
       } catch (error) {
         console.log(error);
-        setError(true);
-        toast({
-          title: "Error",
-          description:
-            error?.response?.data?.message || "An unexpected error occurred.",
-          className: "bg-red-500 text-white", // Assuming you style using className
-        });
+        if (isMounted) {
+          setError(true);
+          toast({
+            title: "Error",
+            description:
+              error?.response?.data?.message || "An unexpected error occurred.",
+            className: "bg-red-500 text-white",
+          });
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     })();
+
+    return () => {
+      isMounted = false; // Cleanup function to avoid memory leaks
+    };
   }, [token, router]);
 
   return (

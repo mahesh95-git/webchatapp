@@ -1,26 +1,38 @@
 import mongoose from "mongoose";
 
 const chatSchema = mongoose.Schema({
-    message: {
-        type: String,
-        required: true,
+  group: {
+    type: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Group",
     },
-    sender: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+  },
+  sender: {
+    type: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    receiver:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+  },
+  receiver: {
+    type: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
-    media:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Media"
-    }
+  },
+  isGroup: {
+    type: Boolean,
+    default: false,
+  },
+  message: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
-const Chat =mongoose.models.Chat|| mongoose.model("Chat", chatSchema);
+const Chat = mongoose.models.Chat || mongoose.model("Chat", chatSchema);
+
+export default Chat;

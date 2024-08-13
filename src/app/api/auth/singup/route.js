@@ -12,6 +12,7 @@ export async function POST(req) {
 
     const body = await req.json();
  
+    console.log(body)
 
     const zodRes = signupSchema.safeParse(body);
 

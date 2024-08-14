@@ -36,14 +36,6 @@ const userSchema = new mongoose.Schema({
       },
     ],
   },
-  sentRequests: {
-    type: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-  },
   chats: {
     type: [
       {

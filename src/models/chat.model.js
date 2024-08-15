@@ -1,23 +1,17 @@
 import mongoose from "mongoose";
 
-const chatSchema = mongoose.Schema({
+const chatSchema = new mongoose.Schema({
   group: {
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Group",
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Group",
   },
   sender: {
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   receiver: {
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   isGroup: {
     type: Boolean,

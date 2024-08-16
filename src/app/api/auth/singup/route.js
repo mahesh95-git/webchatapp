@@ -5,6 +5,7 @@ import signupSchema from "@/zodSchema/signup.Schema";
 import apiResponse from "@/lib/apiResponse";
 import sendEmail from "@/lib/nodeMailer";
 import jwt from "jsonwebtoken";
+import { emailVerificationFormate } from "@/lib/emailFormate";
 
 export async function POST(req) {
   try {
@@ -41,11 +42,14 @@ export async function POST(req) {
      username,
       password: hashedPassword,
       verificationToken,
+      
     });
     await sendEmail({
       receiverEmail: newUser.email,
       name: newUser.username,
       url:`${process.env.PROTOCOL}://${process.env.DOMAIN}/verifyemail/${verificationToken}`,
+      subject: "Verify your email",
+      emailFormate:emailVerificationFormate
     });
 
     return new apiResponse().sendResponse({

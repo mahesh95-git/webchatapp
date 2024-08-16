@@ -11,7 +11,7 @@ class ApiResponse {
       console.log(process.env.JWT_PRIVATE_KEY)
       this.token = jwt.sign({ id: value }, process.env.JWT_PRIVATE_KEY, {
         
-        expiresIn: "5d",
+        expiresIn: "1d",
       });
     } catch (error) {
       console.error("Error creating JWT:", error);

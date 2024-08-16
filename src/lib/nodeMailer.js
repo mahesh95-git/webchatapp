@@ -1,6 +1,4 @@
 import nodemailer from "nodemailer";
-import emailFormate from "./emailFormate";
-
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
@@ -11,12 +9,18 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-export default async function sendEmail({ receiverEmail, name,url }) {
+export default async function sendEmail({
+  receiverEmail,
+  name,
+  url,
+  subject,
+  emailFormate,
+}) {
   try {
     const info = await transporter.sendMail({
-      from: process.env.NODE_MAILER_USER, // sender address
+      from: process.env.NODE_MAILER_USER,
       to: receiverEmail,
-      subject: "email verification",
+      subject: subject,
       html: emailFormate(name, url),
     });
     console.log(info);

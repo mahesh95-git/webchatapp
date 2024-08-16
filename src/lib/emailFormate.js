@@ -67,7 +67,7 @@ const emailFormate = (name, url) => {
     <div class="email-wrapper">
         
         <div class="email-body">
-            <h1>Welcome to NiceChat!</h1>
+            <h1>Welcome to Coffee Chat!</h1>
             <p>Hi ${name},</p>
             <p>Thank you for signing up with us. We're excited to have you on board! To get started, please verify your email address by clicking the button below:</p>
            <div>verification token : ${url}</div>

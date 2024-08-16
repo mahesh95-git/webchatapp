@@ -17,14 +17,22 @@ const mediaSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isDeleted: {
+    type: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+  },
   source: {
     url: {
       type: String,
-      required: true, // It's generally a good idea to require a URL if this is necessary for the media object.
+      required: true,
     },
     public_id: {
       type: String,
-      required: true, // Similarly, requiring a public_id might be crucial depending on your use case.
+      required: true,
     },
   },
   type: {

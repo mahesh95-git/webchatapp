@@ -1,60 +1,45 @@
 import mongoose from "mongoose";
-import dbConnect from "@/lib/dbConnection";
-import Media from "@/models/media.model";
 import Chat from "@/models/chat.model";
 import ApiResponse from "@/lib/apiResponse";
+import { authMiddleware } from "@/lib/authMiddleware";
 
 // delete single media and chat
 export async function DELETE(req, { params }) {
-  try {
-    await dbConnect();
+  return authMiddleware(async (req) => {
     const { id } = params;
-    const userId = "66b7761e584864ad7bf02321";
+    const userId = req.user._id;
     const chat = await Chat.findOne({
       _id: id,
     });
-    const media = await Media.findOne({
-      _id: id,
-    });
-
-    if (!chat && !media) {
+    if (!chat) {
       return new ApiResponse().sendResponse({
         success: false,
         message: "Chat not found",
         statusCode: 404,
       });
     }
-    if (chat) {
+    if (!chat.isGroup) {
       if (chat.isDeleted.length === 2) {
-        await chat.remove();
-       
-      }else{
-
+        await chat.deleteOne({
+          validateBeforeSave: false,
+        });
+      } else {
         chat.isDeleted.push(new mongoose.Types.ObjectId(userId));
-        await chat.save();
+        await chat.save({
+          validateBeforeSave: false,
+        });
       }
+    } else {
+      chat.isDeleted.push(new mongoose.Types.ObjectId(userId));
+      await chat.save({
+        validateBeforeSave: false,
+      });
     }
-    if (media) {
-      if (media.isDeleted.length === 2) {
-        await media.remove();
 
-      }else{
-
-        media.isDeleted.push(new mongoose.Types.ObjectId(userId));
-        await chat.save();
-      }
-
-    }
     return new ApiResponse().sendResponse({
       success: true,
       message: "Chat deleted successfully",
       statusCode: 200,
     });
-  } catch (error) {
-    return new ApiResponse().sendResponse({
-      success: false,
-      message: error.message,
-      statusCode: 500,
-    });
-  }
+  }, req);
 }

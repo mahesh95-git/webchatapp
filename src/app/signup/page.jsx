@@ -20,7 +20,7 @@ import Link from "next/link";
 import signupSchema from "@/zodSchema/signup.Schema";
 import { LoaderCircle } from "lucide-react";
 function Page() {
-  const { toast, toasts } = useToast();
+  const { toast,  } = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,14 +44,12 @@ function Page() {
       interval = setTimeout(async () => {
         try {
           const response = await axios.post(
-            `http://localhost:3000/api/auth/verifyusername/${username}`
+            `/api/auth/verifyusername/${username}`
           );
-          console.log(response);
           if (response.data?.success) {
             setIsAvailable(true);
           }
         } catch (error) {
-          console.log(error);
           setIsAvailable(false);
           toast({
             title: "Error",
@@ -71,10 +69,9 @@ function Page() {
 
   async function onSubmit(values) {
     try {
-      console.log(values)
       setIsLoading(true);
       const response = await axios.post(
-        "http://localhost:3000/api/auth/singup",
+        "/api/auth/singup",
         values
       );
       if (response.data?.success) {
@@ -90,7 +87,6 @@ function Page() {
         variant: "destructive",
       });
       setIsLoading(false);
-      console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -190,7 +186,7 @@ function Page() {
                   <LoaderCircle className="animate-spin" /> Processing...
                 </span>
               ) : (
-                "Signup"
+                "Sign up"
               )}
             </Button>
           </form>

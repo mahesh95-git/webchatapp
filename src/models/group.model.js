@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const groupSchema = mongoose.Schema({
-  avatar: {
+  profilePic: {
     url: {
       type: String,
     },

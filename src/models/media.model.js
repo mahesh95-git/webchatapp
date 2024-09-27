@@ -37,7 +37,7 @@ const mediaSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["image", "video", "audio", "document"],
+    enum: ["image", "video", "raw"],
   },
   createdAt: {
     type: Date,

@@ -1,10 +1,11 @@
 import Image from "next/image";
-import {  LogOut, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { FaUserGroup } from "react-icons/fa6";
 import { MdChatBubble } from "react-icons/md";
 import { FaUserFriends } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
+import Request from "@/components/ui/shared/request";
+import Logout from "@/components/ui/shared/logout";
 
 export default function RootLayout({ children }) {
   const data = [
@@ -27,17 +28,24 @@ export default function RootLayout({ children }) {
       name: "Profile",
       icon: <IoPerson className="text-[#898788] text-2xl" />,
       path: "/home/profile",
-    }
-    
+    },
   ];
   return (
-    <div className="bg-[#202022] w-full min-h-screen flex py-3 pr-3">
-      <div className="flex flex-col  justify-between p-1 items-center  px-3  py-4">
+    <div className="bg-[#202022] w-full h-screen grid grid-cols-[80px_1fr] grid-rows-1  py-3 pr-3">
+      <div className="flex flex-col w-20 justify-between p-1 items-center  px-3  py-4">
         <div className="">
-          <Image src={"/pngegg.png"} alt="logo" width={40} height={40} />
+          <Image
+            src={"/coffeechat.jpg"}
+            alt="logo"
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
         </div>
         <div className="  mt-12 flex-1 flex flex-col  ">
           <ul className="flex flex-col gap-10 w-full">
+            <Request />
+
             {data.map((item) => (
               <li>
                 <Link
@@ -51,13 +59,12 @@ export default function RootLayout({ children }) {
             ))}
           </ul>
         </div>
-        <div className="">
-          <LogOut className="text-[#898788] text-[12px]" />
-          <p className="text-[#898788] text-[12px]">Logout</p>
-        </div>
+       <Logout />
       </div>
-      <div className="bg-[#f9fafc] w-full min-h-full   rounded-3xl px-6 py-[14px]">
-        {children}
+      <div className="bg-[#f9fafc] rounded-3xl ">
+       
+          {children}
+       
       </div>
     </div>
   );

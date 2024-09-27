@@ -12,8 +12,8 @@ export async function POST(req) {
     await dbConnect();
 
     const body = await req.json();
- 
-    console.log(body)
+
+   
 
     const zodRes = signupSchema.safeParse(body);
 
@@ -27,29 +27,26 @@ export async function POST(req) {
     }
 
     await User.findOne({ email: body.email });
-    const {email,username} = zodRes.data
+    const { email, username } = zodRes.data;
 
     const hashedPassword = await bcrypt.hash(body.password, 10);
     const verificationToken = jwt.sign(
       { email: email },
       process.env.JWT_PRIVATE_KEY,
-      { algorithm: "HS256",
-        expiresIn:"5d"
-       }
+      { algorithm: "HS256", expiresIn: "5d" }
     );
     const newUser = await User.create({
-     email,
-     username,
+      email,
+      username,
       password: hashedPassword,
       verificationToken,
-      
     });
     await sendEmail({
       receiverEmail: newUser.email,
       name: newUser.username,
-      url:`${process.env.PROTOCOL}://${process.env.DOMAIN}/verifyemail/${verificationToken}`,
+      url: `${process.env.PROTOCOL}://${process.env.DOMAIN}/verifyemail/${verificationToken}`,
       subject: "Verify your email",
-      emailFormate:emailVerificationFormate
+      emailFormate: emailVerificationFormate,
     });
 
     return new apiResponse().sendResponse({

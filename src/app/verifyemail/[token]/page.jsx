@@ -16,7 +16,7 @@ function Page({ params }) {
     (async () => {
       try {
         const response = await axios.post(
-          `http://localhost:3000/api/auth/verifyEmail/${token}`
+          `/api/auth/verifyEmail/${token}`
         );
         if (response.data?.success) {
           if (isMounted) {
@@ -25,12 +25,10 @@ function Page({ params }) {
               description: "Your email has been successfully verified.",
               className: "bg-green-500 text-white",
             });
-            // Redirect after showing the toast
             router.push("/home/allchats");
           }
         }
       } catch (error) {
-        console.log(error);
         if (isMounted) {
           setError(true);
           toast({

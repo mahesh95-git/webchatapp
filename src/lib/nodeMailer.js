@@ -23,7 +23,6 @@ export default async function sendEmail({
       subject: subject,
       html: emailFormate(name, url),
     });
-    console.log(info);
   } catch (error) {
     throw new Error("error to sending verification email try again later");
   }

@@ -1,8 +1,12 @@
+import Image from 'next/image'
 import React from 'react'
 
 function Welcome() {
   return (
-    <div className="text-3xl font-bold flex items-center  justify-center w-[76%]">Welcome to Coffee Chat</div>
+    <div className="flex flex-col items-center justify-center text-4xl font-bold">
+     
+      <h1>Welcome to CoffeeChat</h1>
+    </div>
   )
 }
 

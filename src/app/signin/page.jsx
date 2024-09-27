@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import { loginFields } from "../../constant";
+import React, { useState,useContext } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,10 +19,12 @@ import Link from "next/link";
 import {  useToast } from "@/components/ui/use-toast";
 import { LoaderCircle } from "lucide-react";
 import axios from "axios";
+import { UserContext } from "@/context/userContext";
 
 function Page() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const {setData}=useContext(UserContext)
   const {toast}=useToast()
   const form = useForm({
     resolver: zodResolver(loginSchema),
@@ -36,11 +37,11 @@ function Page() {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        "http://localhost:3000/api/auth/singin",
+        "/api/auth/singin",
         values
       );
-      console.log(response.data);
       if (response.data.success) {
+        setData(response.data.data)
         toast({
           title: "Success",
           description: "User logged in successfully",
@@ -49,7 +50,6 @@ function Page() {
         router.push("/home/allchats");
       }
     } catch (error) {
-      console.log(error);
       toast({
         title: "Error",
         description: error.response.data.message,
@@ -98,7 +98,7 @@ function Page() {
 
                   <FormMessage />
                   <p>
-                    <Link href="/forgot-password" className="text-blue-100">
+                    <Link href="/forgotpassword" className="text-blue-100">
                       Forgot Password?
                     </Link>
                   </p>
@@ -117,7 +117,7 @@ function Page() {
                   <LoaderCircle className="animate-spin" /> Processing...
                 </span>
               ) : (
-                "Signup"
+                "Sign in"
               )}
             </Button>
           </form>

@@ -13,6 +13,23 @@ const chatSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+  media: {
+    url: {
+      type: String,
+      
+    },
+    public_id: {
+      type: String,
+      
+    },
+  },
+  type: {
+    type: String,
+    default: "text",
+    required: true,
+
+  },
+
   isDeleted: [
     {
       type: mongoose.Schema.Types.ObjectId,

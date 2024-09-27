@@ -72,7 +72,10 @@ export async function POST(req, { params }) {
 
     // Create a new JWT token for the user
     return new apiResponse(req)
-      .createJwtToken(user._id.toString())
+      .createJwtToken({
+        id:user._id.toString(),
+        username:user.username
+      })
       .sendResponse({
         success: true,
         message: "Email verified successfully",

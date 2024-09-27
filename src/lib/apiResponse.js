@@ -4,15 +4,17 @@ import { NextResponse } from "next/server";
 class ApiResponse {
   constructor() {
     this.token = null;
+    this.tokenExpire=null;
   }
 
-  createJwtToken(value) {
+  createJwtToken({id,username}) {
     try {
-      console.log(process.env.JWT_PRIVATE_KEY)
-      this.token = jwt.sign({ id: value }, process.env.JWT_PRIVATE_KEY, {
-        
-        expiresIn: "1d",
-      });
+      const tokenExp=Math.floor(Date.now() / 1000) + (60 * 60 * 24)
+      this.token = jwt.sign({ id, username , exp:tokenExp},
+
+      
+      process.env.JWT_PRIVATE_KEY);
+      this.tokenExpire=tokenExp*1000;
     } catch (error) {
       console.error("Error creating JWT:", error);
     }
@@ -21,13 +23,14 @@ class ApiResponse {
 
   setCookie(response) {
     if (this.token) {
+      const maxAge=this.tokenExpire-Date.now();
       response.cookies.set("token", this.token, {
-        secure: true,
-        httpOnly: true,
-        path: '/',
+        secure: true,        
+        httpOnly: true,    
+        path: '/',           
+        sameSite: "none",    
+        maxAge: maxAge, 
       });
-    } else {
-      console.error("No token available to set in cookie.");
     }
   }
 
@@ -45,7 +48,6 @@ class ApiResponse {
     );
 
     if (this.token) {
-      console.log(this.token)
       this.setCookie(response);
     }
 

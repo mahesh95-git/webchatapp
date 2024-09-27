@@ -1,13 +1,16 @@
-import Welcome from '@/components/ui/shared/welcome'
-import React from 'react'
+import ChatListing from "@/components/ui/shared/chatListing";
+import React from "react";
 
-function page() {
+function page({ searchParams, params, pathname }) {
+  
+  const urlSearchParams= new URLSearchParams(searchParams)
+   const type = urlSearchParams.get("type")
+  const { groupId} = params;
   return (
-    <div>
-      jkfjdl
-      <Welcome/>
-    </div>
-  )
+ 
+      <ChatListing id={groupId} type={type} />
+    
+  );
 }
 
-export default page
+export default page;

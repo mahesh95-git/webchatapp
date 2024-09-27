@@ -1,8 +1,8 @@
 "use client";
-import { Mic, Pause, Trash } from "lucide-react";
+import { Mic, Pause, Send, Trash } from "lucide-react";
 import React, { useRef, useState, useEffect } from "react";
 
-function AudioRecording() {
+function AudioRecording({handleFile}) {
   const [recording, setRecording] = useState(false);
   const [audioURL, setAudioURL] = useState("");
   const [audioBlob, setAudioBlob] = useState(null);
@@ -46,6 +46,8 @@ function AudioRecording() {
           const audioURL = URL.createObjectURL(audioBlob);
           setAudioURL(audioURL);
           setAudioBlob(audioBlob);
+         
+       
           audioChunksRef.current = [];
         };
       })
@@ -71,10 +73,28 @@ function AudioRecording() {
     
   };
 
+  const handleSendMessage = () => {
+    const e={
+      target:{
+        files:[audioBlob]
+      }
+    }
+    if(audioBlob){
+      handleFile(e)
+      
+      setAudioURL("");
+      setAudioBlob(null);
+      setTimer(0);
+    }
+  }
+
   return (
     <div className="flex items-center space-x-4">
       {audioURL ? (
-        <Trash onClick={resetRecording} className="cursor-pointer text-red-600" />
+        
+          <Trash onClick={resetRecording} className="cursor-pointer text-red-600" />
+         
+        
       ) : (
         <div className="flex items-center space-x-2">
           {recording ? (
@@ -87,7 +107,8 @@ function AudioRecording() {
           )}
         </div>
       )}
-      {audioURL && <audio controls src={audioURL} className="ml-4" />}
+      {audioURL && <div className="flex justify-center items-center gap-2"> <audio controls src={audioURL} className="ml-4" />
+       <Send className="cursor-pointer"   onClick={handleSendMessage}/></div>}
     </div>
   );
 }

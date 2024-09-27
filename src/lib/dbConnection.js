@@ -7,7 +7,7 @@ if (!cached) {
 }
 
 export default async function dbConnect() {
-  console.log(process.env.MONGODB_URL)
+ 
  
   if (cached.conn) {
     console.log("Using cached database connection");

@@ -1,71 +1,154 @@
 "use client";
-import React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useCallback } from "react";
 import { FiPhone } from "react-icons/fi";
-
-
-
-
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { GoDeviceCameraVideo } from "react-icons/go";
-import { Input } from "@/components/ui/input";
-import { Paperclip, Send } from "lucide-react";
 import Chats from "./chats";
-import EmojiPicker from "@/components/ui/shared/emojiPicker"
-import AudioRecording from "./audioRecording";
+import useFetchData from "@/customsHook/FetchData";
+import { useInfiniteScrolling } from "./infiniteScrolling";
+import { useContext, useEffect, useState } from "react";
+import { SocketContext } from "@/context/socketContext";
+import { useRef } from "react";
+import Link from "next/link";
+import UserOption from "./userOption";
+import Message from "./message";
+import { UserContext } from "@/context/userContext";
+import { useRouter } from "next/navigation";
+function ChatListing({ id, type }) {
+  const [userTyping, setUserTyping] = useState([]);
+  const { user } = useContext(UserContext);
+  const socket = useContext(SocketContext);
+  const router = useRouter();
+  const limit = 20;
+  const path = `/api/user/chats?limit=${limit}&${
+    type == "friend" ? `receiver=${id}` : `group=${id}`
+  }`;
+  const { data, loader, setData } = useFetchData({ path, limit });
 
-function ChatListing() {
-const data=[{
-  id:"jkdklfk",
-  name:'mahesh',
-  pic:'/pngegg.png',
-  isGroup:false,
-  member:100,
- 
-  lastSeen:'10'
-}]
+  const chatContainerRef = useRef();
+  const { listInnerRef, isLoading } = useInfiniteScrolling({
+    path,
+    limit,
+    totalChats: data?.totalChats,
+    setData: setData,
+  });
+  useEffect(() => {
+    if (socket) {
+      const handleReceiveMessage = (value) => {
+        setData((prev) => {
+          const newData = {
+            ...prev,
+            data: [value, ...prev.data],
+          };
+          return newData;
+        });
+      };
+      const handleUserTyping = (value) => {
+        setUserTyping((prev) =>
+          !prev.includes(value) ? [...prev, value] : prev
+        );
+      };
+      const handleUserStopTyping = (value) => {
+        setUserTyping((prev) => prev.filter((item) => item !== value));
+      };
+      socket.on("new:message", handleReceiveMessage);
+      socket.on("user:typing", handleUserTyping);
+      socket.on("user:stopTyping", handleUserStopTyping);
+      return () => {
+        socket.off("new:message", handleReceiveMessage);
+        socket.off("user:typing", handleUserTyping);
+        socket.off("user:stopTyping", handleUserStopTyping);
+      };
+    }
+  }, [socket]);
+  useEffect(() => {
+    if (socket && type === "group") {
+      socket.emit("joinRoom", id);
 
-  return (
-    <div className="w-full flex h-full flex-col">
-      <div className="flex justify-between  w-full border-b-2 items-center p-2">
+      return () => {
+        socket.emit("leaveRoom", id);
+      };
+    }
+  }, [socket]);
+  useEffect(() => {
+    if (listInnerRef.current) {
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop =
+          chatContainerRef.current.scrollHeight;
+      }
+    }
+  }, [data?.data]);
+
+  const handleVideoCall = useCallback(() => {
+    if (socket) {
+      socket.emit("call:request", { id, type: "video" });
+      router.push(`/home/video/${id}?user=sender&type=video`);
+    }
+  }, [id, router, socket]);
+
+  const handleAudioCall = useCallback(() => {
+    if (socket) {
+      socket.emit("call:request", { id, type: "audio" });
+      router.push(`/home/video/${id}?user=sender&type=audio`);
+    }
+  }, [id, router, socket]);
+  return loader ? (
+    <p className="text-center">Loading...</p>
+  ) : (
+    <div className="grid grid-rows-[60px_1fr_50px] grid-cols-1 h-[calc(100vh-50px)] ">
+      <div className=" flex justify-between w-full border-b-2 items-center p-2 ">
         <div>
-          <h1 className="text-2xl font-bold">Hello</h1>
-          <p>23 members 10 online</p>
+          <div className="flex items-center gap-2">
+            <Link href={`/home/detail/${id}?type=${type}`}>
+              <Avatar className="w-14 h-14">
+                <AvatarImage src={data?.profilePic?.url} alt="profilePic" />
+                <AvatarFallback>
+                  {type === "friend"
+                    ? data?.username?.[0]?.toUpperCase()
+                    : data?.name?.[0]?.toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+            <h1 className="text-2xl font-bold">
+              {type === "friend" ? data?.username : data?.name}
+            </h1>
+          </div>
+          {type === "group" && <p>{data?.members?.length} members</p>}
         </div>
+        {userTyping && (
+          <div className="flex gap-1 text-[#1cce1c] text-sm max-w-[600px]  overflow-hidden">
+            {userTyping.map((item) => (
+              <p className="whitespace-nowrap w-[170px]">{item} typing...</p>
+            ))}
+          </div>
+        )}
+
         <div className="flex gap-10">
-          <FiPhone className="text-2xl" />
-          <GoDeviceCameraVideo className="text-2xl" />
-          <BsThreeDotsVertical className="text-2xl" />
-        </div>
-      </div>
-      <div></div>
-      <div className="flex-1">
-        <Chats />
-      </div>
-      <div className="flex bg-[#dcdcff] mx-5 rounded-md gap-4 justify-between items-center px-4 py-1">
-        <div>
-          <Paperclip />
-        </div>
-        <div >
-         <EmojiPicker/>
-        </div>
-        <div className="flex-1">
-          <Input
-            placeholder="message"
-            className="bg-[#dcdcff] text-black focus:outline-none focus:ring-0 focus:border-none focus:shadow-none"
-            style={{
-              outline: "none !important",
-              boxShadow: "none !important",
-              border: "none !important",
-            }}
+          {type === "friend" && (
+            <>
+               <FiPhone className="text-2xl cursor-pointer"
+            onClick={handleAudioCall}/>
+          <GoDeviceCameraVideo
+            className="text-2xl cursor-pointer"
+            onClick={handleVideoCall}
           />
-        </div>
-        <div>
-          <Send />
-        </div>
-        <div>
-          <AudioRecording/>
+            </>
+          )}
+
+          <UserOption id={id} type={type} setData={setData} data={data} />
         </div>
       </div>
+      <div
+        ref={listInnerRef}
+        className="flex flex-col-reverse overflow-y-scroll h-full pb-9 "
+      >
+        {!data ? (
+          <p>No messages found.</p>
+        ) : (
+          <Chats data={data.data || []} user={user?._id} setData={setData} />
+        )}
+      </div>
+      <Message id={id} type={type} setData={setData} data={data} />
     </div>
   );
 }

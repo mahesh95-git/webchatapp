@@ -13,7 +13,7 @@ export async function POST(req, { params }) {
         statusCode: 400,
       });
     }
-    console.log(user);
+  
     return new ApiResponse().sendResponse({
       success: true,
       message: "username available",

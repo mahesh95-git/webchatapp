@@ -49,11 +49,15 @@ export async function POST(req) {
     }
 
     return new ApiResponse()
-      .createJwtToken(loginUser._id.toString())
+      .createJwtToken({
+        id: loginUser._id,
+        username: loginUser.username,
+      })
       .sendResponse({
         success: true,
         message: "Login successful.",
         statusCode: 200,
+        data: loginUser,
       });
   } catch (error) {
     console.error(error);

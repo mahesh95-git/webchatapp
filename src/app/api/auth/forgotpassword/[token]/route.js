@@ -2,12 +2,13 @@ import ApiResponse from "@/lib/apiResponse";
 import dbConnect from "@/lib/dbConnection";
 import User from "@/models/user.model";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs"
 export async function POST(req, { params }) {
   const { token } = params;
-  
   try {
     const body=await req.json();
     const {newPassword,confirmPassword}=body;
+
     await dbConnect();
 
     if (!token) {
@@ -24,12 +25,10 @@ export async function POST(req, { params }) {
         statusCode: 400,
       });
     }
-    // Verify the JWT token
     let decoded;
     try {
       decoded=jwt.verify(token, process.env.JWT_PRIVATE_KEY);
     } catch (error) {
-
       return new ApiResponse().sendResponse({
         success: false,
         message: "Invalid or expired token",
@@ -37,9 +36,9 @@ export async function POST(req, { params }) {
     });
   }
 
-
-  const hashedPassword = await bcrypt.hash(body.password, 10);
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
   const user=await User.findOne({_id:decoded.id});
+  
   if(!user){
     return new ApiResponse().sendResponse({
       success: false,
@@ -48,6 +47,8 @@ export async function POST(req, { params }) {
     });
   }
   user.password=hashedPassword;
+  user.resentToken=undefined;
+  user.resetTokenExpires=undefined;
   await user.save();
   return new ApiResponse().sendResponse({
     success: true,

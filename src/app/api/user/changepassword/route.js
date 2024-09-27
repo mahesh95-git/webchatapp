@@ -1,14 +1,12 @@
 import ApiResponse from "@/lib/apiResponse";
-import dbConnect from "@/lib/dbConnection";
+import { authMiddleware } from "@/lib/authMiddleware";
 import User from "@/models/user.model";
 import bcrypt from "bcryptjs";
 export async function POST(req) {
-  try {
+  return authMiddleware(async (req) => {
     const body = await req.json();
-    const { oldPassword, newPassword, confirmPassword, userId } = body;
-
-    await dbConnect();
-
+    const userId = req.user._id;
+    const { oldPassword, newPassword, confirmPassword } = body;
     const user = await User.findById(userId);
     if (!user) {
       return new ApiResponse().sendResponse({
@@ -40,11 +38,5 @@ export async function POST(req) {
       message: "password changed successfully",
       statusCode: 200,
     });
-  } catch (error) {
-    return new ApiResponse().sendResponse({
-      success: false,
-      message: error.message,
-      statusCode: 500,
-    });
-  }
+  }, req);
 }

@@ -122,7 +122,7 @@ function Page() {
           <p className="text-center text-white">
             Don't have an account?
             <Link href="/signup" className="text-blue-200">
-              Sign up
+              Signup
             </Link>
           </p>
         </div>

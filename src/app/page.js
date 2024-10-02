@@ -142,7 +142,7 @@ function Page() {
           <div className="text_section">
             <div className="inverted-3">Coffee Chat</div>
             <div className="sub_text">
-              <h2>Let's Build your network</h2>
+              <h2>Let&amp;s Build your network</h2>
               <h2>Create acount and meet your</h2>
               <div className="meet">
                 <div className="sub_meet">
@@ -325,19 +325,16 @@ function Page() {
             <div className="app">
               <div className="instagram">
                 <div className="background">
-                  {/* <i class="fa fa-instagram"></i> */}
                   <img src="/instagram.png" alt="" />
                 </div>
               </div>
               <div className="Facebook">
                 <div className="background">
-                  {/* <i class="fa fa-instagram"></i> */}
                   <img src="/facebook.png" alt="" />
                 </div>
               </div>
               <div className="Twitter">
                 <div className="background">
-                  {/* <i class="fa fa-instagram"></i> */}
                   <img src="/twitter.png" alt="" />
                 </div>
               </div>

@@ -9,7 +9,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     let socketInstance;
     if (user) {
-      socketInstance = io("http://localhost:8000", {
+      socketInstance = io(process.env.SOCKET_SERVER, {
        withCredentials: true,
       
       });

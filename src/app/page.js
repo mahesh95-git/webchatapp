@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 
-function page() {
+function Page() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const onLoadHandler = () => {
@@ -349,4 +349,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

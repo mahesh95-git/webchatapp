@@ -1,5 +1,5 @@
 "use client";
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import {  useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { LoaderCircle } from "lucide-react";
 import axios from "axios";
 import { UserContext } from "@/context/userContext";
@@ -24,8 +24,8 @@ import { UserContext } from "@/context/userContext";
 function Page() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const {setData}=useContext(UserContext)
-  const {toast}=useToast()
+  const { setData } = useContext(UserContext);
+  const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -33,19 +33,16 @@ function Page() {
       password: "",
     },
   });
+
   async function onSubmit(values) {
     try {
       setIsLoading(true);
-      const response = await axios.post(
-        "/api/auth/singin",
-        values
-      );
+      const response = await axios.post("/api/auth/singin", values);
       if (response.data.success) {
-        setData(response.data.data)
+        setData(response.data.data);
         toast({
           title: "Success",
           description: "User logged in successfully",
-         
         });
         router.push("/home/allchats");
       }
@@ -59,12 +56,12 @@ function Page() {
       setIsLoading(false);
     }
   }
+
   return (
-    <div className="bg-[#f9fafc] w-full min-h-screen flex items-center justify-center ">
+    <div className="bg-[#f9fafc] w-full min-h-screen flex items-center justify-center">
       <div className="w-1/4 bg-gray-800 py-10 px-5 rounded-md">
         <h1 className="text-3xl font-bold tracking-tight text-white my-5 text-center">
-          {" "}
-          Sign in
+          Sign&nbsp;in
         </h1>
         <Form {...form}>
           <form
@@ -81,7 +78,6 @@ function Page() {
                   <FormControl>
                     <Input placeholder="email@example.com" {...field} />
                   </FormControl>
-
                   <FormMessage />
                 </FormItem>
               )}
@@ -95,7 +91,6 @@ function Page() {
                   <FormControl>
                     <Input placeholder="password" {...field} />
                   </FormControl>
-
                   <FormMessage />
                   <p>
                     <Link href="/forgotpassword" className="text-blue-100">

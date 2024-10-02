@@ -118,7 +118,7 @@ function ChatListing({ id, type }) {
         {userTyping && (
           <div className="flex gap-1 text-[#1cce1c] text-sm max-w-[600px]  overflow-hidden">
             {userTyping.map((item) => (
-              <p className="whitespace-nowrap w-[170px]">{item} typing...</p>
+              <p className="whitespace-nowrap w-[170px]" key={item}>{item} typing...</p>
             ))}
           </div>
         )}

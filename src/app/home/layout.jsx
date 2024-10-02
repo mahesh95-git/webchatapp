@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
             <Request />
 
             {data.map((item) => (
-              <li>
+              <li key={item.name}>
                 <Link
                   className="text-[#898788] text-[12px] flex justify-center flex-col  items-center"
                   href={item.path}

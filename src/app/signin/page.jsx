@@ -61,7 +61,7 @@ function Page() {
     <div className="bg-[#f9fafc] w-full min-h-screen flex items-center justify-center">
       <div className="w-1/4 bg-gray-800 py-10 px-5 rounded-md">
         <h1 className="text-3xl font-bold tracking-tight text-white my-5 text-center">
-          Sign&nbsp;in
+          Signin
         </h1>
         <Form {...form}>
           <form
@@ -120,7 +120,7 @@ function Page() {
         <div>
           <p className="text-center text-white">or</p>
           <p className="text-center text-white">
-            Don't have an account?{" "}
+            Don't have an account?
             <Link href="/signup" className="text-blue-200">
               Sign up
             </Link>

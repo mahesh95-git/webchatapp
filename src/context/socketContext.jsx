@@ -9,7 +9,7 @@ export const SocketProvider = ({ children }) => {
   useEffect(() => {
     let socketInstance;
     if (user) {
-      socketInstance = io(process.env.SOCKET_SERVER, {
+      socketInstance = io(process.env.NEXT_PUBLIC_SOCKET_SERVER, {
        withCredentials: true,
        transports: ["websocket"],
       

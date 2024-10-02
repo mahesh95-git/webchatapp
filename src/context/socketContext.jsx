@@ -11,6 +11,7 @@ export const SocketProvider = ({ children }) => {
     if (user) {
       socketInstance = io(process.env.SOCKET_SERVER, {
        withCredentials: true,
+       transports: ["websocket"],
       
       });
       setSocket(socketInstance);

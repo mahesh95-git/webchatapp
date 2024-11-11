@@ -39,6 +39,7 @@ export async function authMiddleware(handler,req,params) {
       req.user = user;
       return await handler(req,params);
     } catch (error) {
+      console.log(error);
       return new ApiResponse().sendResponse({
         success: false,
         message: "internal server error",

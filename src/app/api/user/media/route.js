@@ -3,7 +3,6 @@ import { authMiddleware } from "@/lib/authMiddleware";
 import { uploadMedia } from "@/lib/uploadMedia";
 import Chat from "@/models/chat.model";
 import Group from "@/models/group.model";
-import Media from "@/models/media.model";
 import User from "@/models/user.model";
 
 export async function POST(req) {

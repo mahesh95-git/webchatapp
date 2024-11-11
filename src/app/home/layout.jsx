@@ -6,7 +6,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { IoPerson } from "react-icons/io5";
 import Request from "@/components/ui/shared/request";
 import Logout from "@/components/ui/shared/logout";
-
+import { HiStatusOnline } from "react-icons/hi";
 export default function RootLayout({ children }) {
   const data = [
     {
@@ -25,10 +25,16 @@ export default function RootLayout({ children }) {
       path: "/home/groups",
     },
     {
+      name: "Status",
+      icon: <HiStatusOnline className="text-[#898788] text-2xl" />,
+      path: "/home/status",
+    },
+    {
       name: "Profile",
       icon: <IoPerson className="text-[#898788] text-2xl" />,
       path: "/home/profile",
     },
+
   ];
   return (
     <div className="bg-[#202022] w-full h-screen grid grid-cols-[80px_1fr] grid-rows-1  py-3 pr-3">

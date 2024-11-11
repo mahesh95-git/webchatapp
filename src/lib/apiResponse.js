@@ -28,7 +28,7 @@ class ApiResponse {
         secure: true,        
         httpOnly: true,    
         path: '/',           
-        sameSite: "None",    
+        sameSite: "None",     
         maxAge: maxAge, 
       });
     }

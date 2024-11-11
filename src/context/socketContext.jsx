@@ -22,7 +22,7 @@ export const SocketProvider = ({ children }) => {
     return () => {
       socketInstance.disconnect();
     };
-  }, []);
+  }, [user]);
 
   return (
     <SocketContext.Provider value={socket}>{children}</SocketContext.Provider>

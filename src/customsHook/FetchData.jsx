@@ -14,10 +14,9 @@ export default function useFetchData({
 
   useEffect(() => {
     const source = axios.CancelToken.source();
-    setLoader(true);
-
     const fetchData = async () => {
       try {
+        setLoader(true);
         const options = {
           withCredentials: true,
           headers: headers,

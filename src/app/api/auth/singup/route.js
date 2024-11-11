@@ -41,13 +41,13 @@ export async function POST(req) {
       password: hashedPassword,
       verificationToken,
     });
-    await sendEmail({
-      receiverEmail: newUser.email,
-      name: newUser.username,
-      url: `${process.env.PROTOCOL}://${process.env.DOMAIN}/verifyemail/${verificationToken}`,
-      subject: "Verify your email",
-      emailFormate: emailVerificationFormate,
-    });
+    // await sendEmail({
+    //   receiverEmail: newUser.email,
+    //   name: newUser.username,
+    //   url: `${process.env.PROTOCOL}://${process.env.DOMAIN}/verifyemail/${verificationToken}`,
+    //   subject: "Verify your email",
+    //   emailFormate: emailVerificationFormate,
+    // });
 
     return new apiResponse().sendResponse({
       success: true,

@@ -1,5 +1,14 @@
 "use client";
 import React, { useContext, useEffect, useState } from "react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -10,7 +19,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { CirclePlus, X } from "lucide-react";
+import { CirclePlus, Cross, Plus, X } from "lucide-react";
 import { Input } from "../input";
 import DisplayList from "./displayList";
 import axios from "axios";
@@ -18,11 +27,17 @@ import { useToast } from "../use-toast";
 import { Button } from "../button";
 import { SocketContext } from "@/context/socketContext";
 import useUpdateData from "@/customsHook/updateData";
-
-function AddNew({ type }) {
+import { UserContext } from "@/context/userContext";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from "next/link";
+function AddNew({ type, viewStateHandler }) {
   const [open, setOpen] = useState(false);
-  const { updateData } = useUpdateData();
+  const { updateData, loading } = useUpdateData();
   const socket = useContext(SocketContext);
+  const [content, setContent] = useState("");
+  const { user } = useContext(UserContext);
+
+  const [color, setColor] = useState("#e7dfdf");
   const [username, setUsername] = useState("");
   const { toast } = useToast();
   const [data, setData] = useState([]);
@@ -99,7 +114,6 @@ function AddNew({ type }) {
       };
     });
   };
-
   const handleRemoveMembersFromGroup = (value) => {
     setGroup((prev) => ({
       ...prev,
@@ -167,10 +181,11 @@ function AddNew({ type }) {
     }
     setLoader2(false);
   };
-  return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
+
+  return type == "friend" || type == "group" ? (
+    <AlertDialog open={false} onOpenChange={setOpen}>
       <AlertDialogTrigger>
-        <div className="w-full bg-gray-100 justify-center gap-3  rounded-md items-center flex py-3">
+        <div className="w-full bg-gray-100  justify-center gap-3  rounded-md items-center flex py-3">
           <CirclePlus className="cursor-pointer" />
           <p>{type}</p>
         </div>
@@ -256,6 +271,38 @@ function AddNew({ type }) {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+  ) : (
+    <div className="relative">
+      <div className="flex justify-start  w-full  pl-2 gap-2 bg-gray-100 p-2 rounded-md">
+        <Avatar className=" cursor-pointer border-[#7facdf] border-4" onClick={()=>viewStateHandler(user._id)}>
+          <AvatarImage
+            src={user.length > 0 && user?.profilePic?.url}
+            className="border-2 "
+          />
+          <AvatarFallback className="  ">{"M"}</AvatarFallback>
+        </Avatar>
+        <p className="font-bold">My status</p>
+      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <div className="absolute bottom-0 left-8  bg-white rounded-full">
+            <Plus className="cursor-pointer" />
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="bg-white"
+          align="start"
+          alignOffset={30}
+        >
+          <DropdownMenuItem>
+            <Link href={"/home/status/new?type=text"}>Text</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href={"/home/status/new?type=file"}>Photo Or Video</Link>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
 
